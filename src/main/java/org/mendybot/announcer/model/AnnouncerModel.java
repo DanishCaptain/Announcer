@@ -6,12 +6,25 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.Properties;
 
+import org.mendybot.announcer.fault.ExecuteException;
+import org.mendybot.announcer.log.Logger;
+
 public class AnnouncerModel
 {
   private AnnouncerOs os;
+  private File archiveDir;
 
   public AnnouncerModel()
   {
+    Properties p = new Properties();
+    try
+    {
+      Logger.init("/var/log/mendybot", p);
+    }
+    catch (ExecuteException e)
+    {
+      e.printStackTrace();
+    }
     String osType = System.getProperty("os.name");
     if ("linux".equalsIgnoreCase(osType))
     {
@@ -21,6 +34,12 @@ public class AnnouncerModel
     {
       throw new RuntimeException("Unknown OS Type: "+osType);
     }
+    archiveDir = new File("/opt/MendyBot/announcer/archive");
+  }
+  
+  public File getArchiveDirectory()
+  {
+    return archiveDir;
   }
 
   private void initLinux()

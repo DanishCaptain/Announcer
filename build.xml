@@ -9,7 +9,7 @@
 	<property name="master.lib.dir" value="." />
     <property name="main-class" value="org.mendybot.announcer.Announcer" />
 	<property name="jar.file" value="${lib.dir}/MB-Announcer.jar" />
-    <property name="version" value="0.1" />
+    <property name="version" value="0.3" />
 
 	<target name="clean">
 		<delete dir="${build.dir}" />

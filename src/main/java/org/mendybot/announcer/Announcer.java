@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.net.InetSocketAddress;
 
 import org.mendybot.announcer.controller.AnnouncerHandler;
+import org.mendybot.announcer.controller.DisplayHandler;
+import org.mendybot.announcer.controller.PlayerHandler;
 import org.mendybot.announcer.controller.StatusHandler;
 import org.mendybot.announcer.model.AnnouncerModel;
 
@@ -22,6 +24,8 @@ public class Announcer
       
       server.createContext("/announce", new AnnouncerHandler(model));
       server.createContext("/status", new StatusHandler(model));
+      server.createContext("/play", new PlayerHandler(model));
+      server.createContext("/display", new DisplayHandler(model));
       
       server.setExecutor(null); // creates a default executor
       server.start();

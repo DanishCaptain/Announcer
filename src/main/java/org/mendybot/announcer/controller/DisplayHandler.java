@@ -8,8 +8,8 @@ import java.util.Properties;
 
 import org.mendybot.announcer.model.AnnouncerModel;
 import org.mendybot.announcer.model.AnnouncerOs;
+import org.mendybot.announcer.widgets.display.ImagePlayer;
 import org.mendybot.announcer.widgets.display.MatrixDisplayWidget;
-import org.mendybot.announcer.widgets.display.ScrollingTextPlayer;
 import org.mendybot.announcer.widgets.sound.APlayer;
 import org.mendybot.announcer.widgets.sound.OmxPlayer;
 import org.mendybot.announcer.widgets.sound.SoundWidget;
@@ -18,29 +18,23 @@ import org.mendybot.announcer.widgets.speech.SpeechWidget;
 
 import com.sun.net.httpserver.HttpExchange;
 
-public class AnnouncerHandler extends BaseHandler
+public class DisplayHandler extends BaseHandler
 {
-  private SoundWidget soundEngine;
-  private SpeechWidget speakerEngine;
   private MatrixDisplayWidget displayEngine;
 
-  public AnnouncerHandler(AnnouncerModel model)
+  public DisplayHandler(AnnouncerModel model)
   {
     super(model);
     if (model.getOs() == AnnouncerOs.RASPBIAN) {
-      soundEngine = APlayer.getInstance();
-      speakerEngine = CepstralSpeaker.getInstance();
-      displayEngine = ScrollingTextPlayer.getInstance();    
+      displayEngine = ImagePlayer.getInstance();    
 
     } 
     else if (model.getOs() == AnnouncerOs.UBUNTO) {
-      soundEngine = OmxPlayer.getInstance();
-      speakerEngine = CepstralSpeaker.getInstance();
-      displayEngine = ScrollingTextPlayer.getInstance();
+      displayEngine = ImagePlayer.getInstance();
     }
     else
     {
-      throw new RuntimeException("Unknown AnnouncerOs "+model.getOs());
+      throw new RuntimeException("Unknown DisplayrOs "+model.getOs());
     }
   }
 
@@ -48,19 +42,11 @@ public class AnnouncerHandler extends BaseHandler
   public void handle(HttpExchange ex) throws IOException
   {
     Properties p = getProperties(ex);
-    String text = p.getProperty("say");
-    text = URLDecoder.decode(text, "UTF-8");
-    String response = "Announcement submitted";
-    File sound = new File(getModel().getArchiveDirectory(), "say.wav");
-    speakerEngine.generate(sound, text);
-    try
-    {
-      Thread.sleep(500);
-    }
-    catch (InterruptedException e){}
-    displayEngine.show(text);
+    String id = p.getProperty("id");
+    String response = "Display submitted";
+    File sound = new File(getModel().getArchiveDirectory(), id+".ppm");
+    displayEngine.show(sound);
 
-    soundEngine.submit(sound);
     ex.sendResponseHeaders(200, response.length());
     OutputStream os = ex.getResponseBody();
     os.write(response.getBytes());

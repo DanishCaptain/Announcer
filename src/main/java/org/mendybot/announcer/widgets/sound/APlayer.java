@@ -8,15 +8,15 @@ import java.io.InputStreamReader;
 import org.mendybot.announcer.log.Logger;
 import org.mendybot.announcer.widgets.CommandWidget;
 
-public class OmxPlayer extends CommandWidget implements SoundWidget, Runnable
+public class APlayer extends CommandWidget implements SoundWidget, Runnable
 {
-  private static Logger LOG = Logger.getInstance(OmxPlayer.class);
-  private static OmxPlayer singleton;
+  private static Logger LOG = Logger.getInstance(APlayer.class);
+  private static APlayer singleton;
   private Thread t = new Thread(this);
   private boolean running;
   private File file;
 
-  private OmxPlayer()
+  private APlayer()
   {
     t.setName(getClass().getSimpleName());
     t.setDaemon(true);
@@ -59,7 +59,7 @@ public class OmxPlayer extends CommandWidget implements SoundWidget, Runnable
   {
     synchronized (this)
     {
-      String command = "omxplayer " + file.getPath();
+      String command = "aplay -c 2 " + file.getPath();
       Runtime run = Runtime.getRuntime();
       try
       {
@@ -93,11 +93,11 @@ public class OmxPlayer extends CommandWidget implements SoundWidget, Runnable
     }
   }
 
-  public synchronized static OmxPlayer getInstance()
+  public synchronized static APlayer getInstance()
   {
     if (singleton == null)
     {
-      singleton = new OmxPlayer();
+      singleton = new APlayer();
     }
     return singleton;
   }

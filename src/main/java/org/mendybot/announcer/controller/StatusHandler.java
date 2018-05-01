@@ -11,14 +11,13 @@ import org.mendybot.announcer.model.AnnouncerModel;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 
-public class StatusHandler implements HttpHandler
+public class StatusHandler extends BaseHandler
 {
   private String version;
-  private AnnouncerModel model;
 
   public StatusHandler(AnnouncerModel model)
   {
-    this.model = model;
+    super(model);
     InputStream is = this.getClass().getClassLoader().getResourceAsStream("version.txt");
     if (is != null) {
       BufferedReader br = new BufferedReader(new InputStreamReader(is));
