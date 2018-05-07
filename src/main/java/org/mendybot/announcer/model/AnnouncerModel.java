@@ -29,8 +29,10 @@ public class AnnouncerModel
     if ("linux".equalsIgnoreCase(osType))
     {
       initLinux();
-    }
-    else
+    } else if ("Mac OS X".equalsIgnoreCase(osType))
+    {
+      initOSX();
+    }    else
     {
       throw new RuntimeException("Unknown OS Type: "+osType);
     }
@@ -73,6 +75,11 @@ public class AnnouncerModel
     {
       throw new RuntimeException(e);
     }
+  }
+
+  private void initOSX()
+  {
+    os = AnnouncerOs.OSX;
   }
 
   private void initRaspbian()

@@ -1,10 +1,7 @@
 package org.mendybot.announcer.widgets.sound;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-
 import org.mendybot.announcer.log.Logger;
+import org.mendybot.announcer.tools.CommandTool;
 import org.mendybot.announcer.widgets.CommandWidget;
 
 public class APlayer extends CommandWidget implements SoundWidget, Runnable
@@ -14,6 +11,7 @@ public class APlayer extends CommandWidget implements SoundWidget, Runnable
   private Thread t = new Thread(this);
   private boolean running;
   private PlayFile playFile;
+  private int soundLevel;
 
   private APlayer()
   {
@@ -44,6 +42,11 @@ public class APlayer extends CommandWidget implements SoundWidget, Runnable
     }
   }
 
+  public boolean isRunning()
+  {
+      return running;
+  }
+
   @Override
   public void submit(PlayFile file)
   {
@@ -54,43 +57,21 @@ public class APlayer extends CommandWidget implements SoundWidget, Runnable
     }
   }
 
+  @Override
+  public void checkSoundLevel(int soundLevel) {
+    if (this.soundLevel != soundLevel) {
+        String command = "amixer -c 1 sset Speaker,0 "+soundLevel+"%";
+        CommandTool.execute("soundLevel:"+soundLevel, command);
+        this.soundLevel = soundLevel;
+    }
+  }
+
   private void play(PlayFile pf)
   {
     synchronized (this)
     {
       String command = "aplay -c 2 " + pf.getFile().getPath();
-      Runtime run = Runtime.getRuntime();
-      try
-      {
-        //amixer -c 1 sset Speaker,0 10%
-        
-        LOG.logInfo("play", "calling for " + pf.getFile());
-        Process proc = run.exec(command);
-        LOG.logDebug("play", "starting for " + pf.getFile());
-        proc.waitFor();
-        LOG.logDebug("play", "ending for " + pf.getFile());
-        BufferedReader is = new BufferedReader(new InputStreamReader((proc.getInputStream())));
-        String line;
-        while ((line = is.readLine()) != null)
-        {
-          LOG.logDebug("play", line);
-        }
-        is.close();
-        is = new BufferedReader(new InputStreamReader((proc.getErrorStream())));
-        while ((line = is.readLine()) != null)
-        {
-          LOG.logDebug("play", "E: " + line);
-        }
-        is.close();
-      }
-      catch (IOException e)
-      {
-        LOG.logSevere("play", e);
-      }
-      catch (InterruptedException e)
-      {
-        LOG.logInfo("play", e);
-      }
+      CommandTool.execute(pf.getFile().toString(), command);
     }
   }
 

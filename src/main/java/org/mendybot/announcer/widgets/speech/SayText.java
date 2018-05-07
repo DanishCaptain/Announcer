@@ -4,6 +4,7 @@ public class SayText
 {
   private String text;
   private int repeat=1;
+  private int soundLevel;
 
   public SayText(String text)
   {
@@ -24,5 +25,12 @@ public class SayText
   {
     this.repeat = repeat;
   }
-  
+
+  public void setSoundLevel(int soundLevel) {
+    this.soundLevel = soundLevel;
+  }
+
+  public int getSoundLevel() {
+    return soundLevel;
+  }
 }

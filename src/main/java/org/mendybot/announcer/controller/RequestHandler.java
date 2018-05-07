@@ -10,14 +10,13 @@ import java.util.stream.Collectors;
 import org.json.JSONObject;
 import org.mendybot.announcer.model.AnnouncerModel;
 import org.mendybot.announcer.model.AnnouncerOs;
-import org.mendybot.announcer.widgets.display.DisplayText;
-import org.mendybot.announcer.widgets.display.MatrixDisplayWidget;
-import org.mendybot.announcer.widgets.display.ScrollingTextPlayer;
+import org.mendybot.announcer.widgets.display.*;
 import org.mendybot.announcer.widgets.sound.APlayer;
 import org.mendybot.announcer.widgets.sound.OmxPlayer;
 import org.mendybot.announcer.widgets.sound.PlayFile;
 import org.mendybot.announcer.widgets.sound.SoundWidget;
 import org.mendybot.announcer.widgets.speech.CepstralSpeaker;
+import org.mendybot.announcer.widgets.speech.OsxSay;
 import org.mendybot.announcer.widgets.speech.SayText;
 import org.mendybot.announcer.widgets.speech.SpeechWidget;
 
@@ -25,6 +24,8 @@ import com.sun.net.httpserver.HttpExchange;
 
 public class RequestHandler extends BaseHandler
 {
+  public static final int DEFAULT_SOUND_LEVEL = 65;
+  public static final String P_SOUND_LEVEL = "sound-level";
   public static final String P_SAY_TEXT = "say";
   public static final String P_SAY_TEXT_REPEAT = "say-repeat";
   public static final String P_DISPLAY_TEXT = "display";
@@ -33,21 +34,33 @@ public class RequestHandler extends BaseHandler
   public static final String P_DISPLAY_TEXT_REPEAT = "display-repeat";
   private SoundWidget soundEngine;
   private SpeechWidget speakerEngine;
-  private MatrixDisplayWidget displayEngine;
+  private MatrixDisplayWidget textEngine;
+  private MatrixDisplayWidget imageEngine;
+  private MatrixDisplayWidget effectEngine;
 
   public RequestHandler(AnnouncerModel model)
   {
     super(model);
     if (model.getOs() == AnnouncerOs.RASPBIAN) {
       soundEngine = APlayer.getInstance();
-      speakerEngine = CepstralSpeaker.getInstance();
-      displayEngine = ScrollingTextPlayer.getInstance();    
-
-    } 
+      speakerEngine = CepstralSpeaker.getInstance(model, soundEngine);
+      textEngine = ScrollingTextPlayer.getInstance();
+      imageEngine = ImagePlayer.getInstance();
+      effectEngine = EffectPlayer.getInstance();
+    }
     else if (model.getOs() == AnnouncerOs.UBUNTO) {
       soundEngine = OmxPlayer.getInstance();
-      speakerEngine = CepstralSpeaker.getInstance();
-      displayEngine = ScrollingTextPlayer.getInstance();
+      speakerEngine = CepstralSpeaker.getInstance(model, soundEngine);
+        textEngine = ScrollingTextPlayer.getInstance();
+        imageEngine = ImagePlayer.getInstance();
+        effectEngine = EffectPlayer.getInstance();
+    }
+    else if (model.getOs() == AnnouncerOs.OSX) {
+        soundEngine = OmxPlayer.getInstance();
+        speakerEngine = OsxSay.getInstance();
+        textEngine = ScrollingTextPlayer.getInstance();
+        imageEngine = ImagePlayer.getInstance();
+        effectEngine = EffectPlayer.getInstance();
     }
     else
     {
@@ -68,6 +81,7 @@ public class RequestHandler extends BaseHandler
       ex.getResponseHeaders().set("Content-Type", "application/json");
       
      JSONObject jObj = new JSONObject(json);
+     int soundLevel = jObj.getInt(P_SOUND_LEVEL);
      String say = jObj.getString(P_SAY_TEXT);
      int repeatSay = jObj.getInt(P_SAY_TEXT_REPEAT);
      String display = jObj.getString(P_DISPLAY_TEXT);
@@ -83,22 +97,27 @@ public class RequestHandler extends BaseHandler
      os.write(response.getBytes());
      os.flush();
      os.close();
-     
+
+     Effect effect = new Effect();
+     effect.setRepeat(1);
+     effect.setTValue(3);
+     soundEngine.checkSoundLevel(15);
+     effectEngine.show(effect);
+     soundEngine.submit(new PlayFile(new File(getModel().getArchiveDirectory(), "ALARM.wav")));
+     effectEngine.show(effect);
+
      if (say != null && !"".equals(say.trim())) {
-       File sound = new File(getModel().getArchiveDirectory(), "say.wav");
        SayText st = new SayText(say);
        st.setRepeat(repeatSay);
-       speakerEngine.generate(sound, st);
-       PlayFile pf = new PlayFile(sound);
-       pf.setRepeat(st.getRepeat());
-       soundEngine.submit(pf);
+       st.setSoundLevel(soundLevel);
+       speakerEngine.say(st);
      }
      if (display != null && !"".equals(display.trim())) {
        DisplayText dt = new DisplayText(display);
        dt.setFont(font);
        dt.setRGB(rgb);
        dt.setRepeat(repeatDisplay);
-       displayEngine.show(dt);
+       textEngine.show(dt);
      }
 
       

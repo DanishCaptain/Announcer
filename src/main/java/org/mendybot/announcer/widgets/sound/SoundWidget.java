@@ -5,4 +5,7 @@ public interface SoundWidget
 
   void submit(PlayFile file);
 
+  void checkSoundLevel(int soundLevel);
+
 }
+

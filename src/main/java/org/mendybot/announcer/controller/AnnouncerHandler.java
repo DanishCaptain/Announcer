@@ -17,6 +17,7 @@ import org.mendybot.announcer.widgets.sound.OmxPlayer;
 import org.mendybot.announcer.widgets.sound.PlayFile;
 import org.mendybot.announcer.widgets.sound.SoundWidget;
 import org.mendybot.announcer.widgets.speech.CepstralSpeaker;
+import org.mendybot.announcer.widgets.speech.OsxSay;
 import org.mendybot.announcer.widgets.speech.SayText;
 import org.mendybot.announcer.widgets.speech.SpeechWidget;
 
@@ -33,13 +34,18 @@ public class AnnouncerHandler extends BaseHandler
     super(model);
     if (model.getOs() == AnnouncerOs.RASPBIAN) {
       soundEngine = APlayer.getInstance();
-      speakerEngine = CepstralSpeaker.getInstance();
-      displayEngine = ScrollingTextPlayer.getInstance();    
+      speakerEngine = CepstralSpeaker.getInstance(model, soundEngine);
+      displayEngine = ScrollingTextPlayer.getInstance();
 
     } 
     else if (model.getOs() == AnnouncerOs.UBUNTO) {
       soundEngine = OmxPlayer.getInstance();
-      speakerEngine = CepstralSpeaker.getInstance();
+      speakerEngine = CepstralSpeaker.getInstance(model, soundEngine);
+      displayEngine = ScrollingTextPlayer.getInstance();
+    }
+    else if (model.getOs() == AnnouncerOs.OSX) {
+      soundEngine = OmxPlayer.getInstance();
+      speakerEngine = OsxSay.getInstance();
       displayEngine = ScrollingTextPlayer.getInstance();
     }
     else
@@ -58,19 +64,12 @@ public class AnnouncerHandler extends BaseHandler
     json.put("result", "Announcement submitted");
     String response = json.toString();
     
-    File sound = new File(getModel().getArchiveDirectory(), "say.wav");
     SayText st = new SayText(text);
-    PlayFile pf = new PlayFile(sound);
-    speakerEngine.generate(sound, st);
-    try
-    {
-      Thread.sleep(500);
-    }
-    catch (InterruptedException e){}
+    speakerEngine.say(st);
+
     DisplayText dt = new DisplayText(text);
     displayEngine.show(dt);
 
-    soundEngine.submit(pf);
     ex.sendResponseHeaders(200, response.length());
     OutputStream os = ex.getResponseBody();
     os.write(response.getBytes());

@@ -24,8 +24,11 @@ public class PlayerHandler extends BaseHandler
     super(model);
     if (model.getOs() == AnnouncerOs.RASPBIAN) {
       soundEngine = APlayer.getInstance();
-    } 
+    }
     else if (model.getOs() == AnnouncerOs.UBUNTO) {
+      soundEngine = OmxPlayer.getInstance();
+    }
+    else if (model.getOs() == AnnouncerOs.OSX) {
       soundEngine = OmxPlayer.getInstance();
     }
     else

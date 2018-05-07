@@ -4,9 +4,10 @@ import java.io.File;
 
 public interface MatrixDisplayWidget
 {
-
   void show(DisplayText text);
 
-  void show(File file);
+  void show(ImageFile file);
+
+  void show(Effect effect);
 
 }

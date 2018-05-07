@@ -1,11 +1,7 @@
 package org.mendybot.announcer.widgets.display;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStreamReader;
-
 import org.mendybot.announcer.log.Logger;
+import org.mendybot.announcer.tools.CommandTool;
 import org.mendybot.announcer.widgets.CommandWidget;
 
 public class ScrollingTextPlayer extends CommandWidget implements MatrixDisplayWidget, Runnable
@@ -19,7 +15,6 @@ public class ScrollingTextPlayer extends CommandWidget implements MatrixDisplayW
 
   private ScrollingTextPlayer()
   {
-
     t.setName(getClass().getSimpleName());
     t.setDaemon(true);
     t.start();
@@ -61,35 +56,8 @@ public class ScrollingTextPlayer extends CommandWidget implements MatrixDisplayW
   {
     synchronized (this)
     {
-      Runtime run = Runtime.getRuntime();
-      try
-      {
-        LOG.logInfo("play", "calling for " + displayText);
-        String command = createCommand(dt.getFont(), dt.getRGB(), dt.getRepeat());
-        Process proc = run.exec(command + " " + displayText.getText());
-        proc.waitFor();
-        BufferedReader is = new BufferedReader(new InputStreamReader((proc.getInputStream())));
-        String line;
-        while ((line = is.readLine()) != null)
-        {
-          LOG.logDebug("play", line);
-        }
-        is.close();
-        is = new BufferedReader(new InputStreamReader((proc.getErrorStream())));
-        while ((line = is.readLine()) != null)
-        {
-          LOG.logSevere("play", "E: " + line);
-        }
-        is.close();
-      }
-      catch (IOException e)
-      {
-        LOG.logSevere("play", e);
-      }
-      catch (InterruptedException e)
-      {
-        LOG.logInfo("play", e);
-      }
+      String command = createCommand(dt.getFont(), dt.getRGB(), dt.getRepeat());
+      CommandTool.execute("for " + displayText, command+" "+dt.getText());
     }
   }
 
@@ -129,8 +97,11 @@ public class ScrollingTextPlayer extends CommandWidget implements MatrixDisplayW
   }
 
   @Override
-  public void show(File file)
-  {
-    throw new RuntimeException("not implemented");
+  public void show(ImageFile file) { throw new RuntimeException("not implemented");
   }
+
+  @Override
+  public void show(Effect effect) { throw new RuntimeException("not implemented");
+  }
+
 }

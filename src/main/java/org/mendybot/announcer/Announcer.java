@@ -19,6 +19,9 @@ import org.mendybot.announcer.widgets.display.DisplayText;
 import org.mendybot.announcer.widgets.display.ScrollingTextPlayer;
 
 import com.sun.net.httpserver.HttpServer;
+import org.mendybot.announcer.widgets.sound.APlayer;
+import org.mendybot.announcer.widgets.sound.OmxPlayer;
+import org.mendybot.announcer.widgets.sound.SoundWidget;
 
 public class Announcer
 {
@@ -27,6 +30,16 @@ public class Announcer
   public Announcer()
   {
     model = new AnnouncerModel();
+
+    if (model.getOs() == AnnouncerOs.RASPBIAN) {
+      APlayer soundEngine = APlayer.getInstance();
+      soundEngine.checkSoundLevel(RequestHandler.DEFAULT_SOUND_LEVEL);
+    }
+    else if (model.getOs() == AnnouncerOs.UBUNTO) {
+      OmxPlayer soundEngine = OmxPlayer.getInstance();
+      soundEngine.checkSoundLevel(RequestHandler.DEFAULT_SOUND_LEVEL);
+    }
+
     try
     {
       HttpServer server = HttpServer.create(new InetSocketAddress(8000), 0);

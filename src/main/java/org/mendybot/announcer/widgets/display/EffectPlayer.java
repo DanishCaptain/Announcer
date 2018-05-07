@@ -4,16 +4,16 @@ import org.mendybot.announcer.log.Logger;
 import org.mendybot.announcer.tools.CommandTool;
 import org.mendybot.announcer.widgets.CommandWidget;
 
-public class ImagePlayer extends CommandWidget implements MatrixDisplayWidget, Runnable
+public class EffectPlayer extends CommandWidget implements MatrixDisplayWidget, Runnable
 {
-  private static Logger LOG = Logger.getInstance(ImagePlayer.class);
-  private static ImagePlayer singleton;
+  private static Logger LOG = Logger.getInstance(EffectPlayer.class);
+  private static EffectPlayer singleton;
   private Thread t = new Thread(this);
   private boolean running;
   private String commandBase = "sudo /opt/rpi-rgb-led-matrix/examples-api-use/demo";
-  private ImageFile file;
+  private Effect effect;
 
-  private ImagePlayer()
+  private EffectPlayer()
   {
     t.setName(getClass().getSimpleName());
     t.setDaemon(true);
@@ -35,32 +35,32 @@ public class ImagePlayer extends CommandWidget implements MatrixDisplayWidget, R
       catch (InterruptedException e1)
       {
       }
-      if (file != null)
+      if (effect != null)
       {
-        play(file);
+        play(effect);
       }
     }
   }
 
   @Override
-  public void show(ImageFile file)
+  public void show(Effect effect)
   {
-    this.file = file;
+    this.effect = effect;
     synchronized (this)
     {
       notifyAll();
     }
   }
 
-    private void play(ImageFile file) {
+    private void play(Effect effect) {
       synchronized (this) {
-          LOG.logInfo("play", "calling for " + file.getFile());
-          String command = createCommand(1);
-          CommandTool.execute("show", command + " " + file.getFile());
+          LOG.logInfo("play", "calling for " + effect);
+          String command = createCommand(effect);
+          CommandTool.execute("show", command);
       }
   }
 
-    private String createCommand(int dValue)
+    private String createCommand(Effect effect)
     {
         /*
 Options:
@@ -110,28 +110,28 @@ Scrolls the runtext for 10 seconds
         command.append(" --led-no-hardware-pulse");
         command.append(" --led-rows=32");
         command.append(" --led-cols=32");
-        command.append(" --led-chain=4");
-        command.append(" -t 10");
-        command.append(" -D "+dValue);
+        command.append(" --led-chain=1");
+        command.append(" -t "+effect.getTValue());
+        command.append(" -D "+effect.getDValue());
         return command.toString();
     }
 
-  public synchronized static ImagePlayer getInstance()
+  public synchronized static EffectPlayer getInstance()
   {
     if (singleton == null)
     {
-      singleton = new ImagePlayer();
+      singleton = new EffectPlayer();
     }
     return singleton;
   }
 
-    @Override
-    public void show(DisplayText text)
+  @Override
+  public void show(DisplayText text)
     {
         throw new RuntimeException("not implemented");
     }
 
-    @Override
-    public void show(Effect effect) { throw new RuntimeException("not implemented"); }
-
+  @Override
+  public void show(ImageFile file) {throw new RuntimeException("not implemented");
+  }
 }

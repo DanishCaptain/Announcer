@@ -8,6 +8,7 @@ import java.util.Properties;
 import org.json.JSONObject;
 import org.mendybot.announcer.model.AnnouncerModel;
 import org.mendybot.announcer.model.AnnouncerOs;
+import org.mendybot.announcer.widgets.display.ImageFile;
 import org.mendybot.announcer.widgets.display.ImagePlayer;
 import org.mendybot.announcer.widgets.display.MatrixDisplayWidget;
 
@@ -27,6 +28,9 @@ public class DisplayHandler extends BaseHandler
     else if (model.getOs() == AnnouncerOs.UBUNTO) {
       displayEngine = ImagePlayer.getInstance();
     }
+    else if (model.getOs() == AnnouncerOs.OSX) {
+      displayEngine = ImagePlayer.getInstance();
+    }
     else
     {
       throw new RuntimeException("Unknown DisplayrOs "+model.getOs());
@@ -41,8 +45,9 @@ public class DisplayHandler extends BaseHandler
     JSONObject json = new JSONObject();
     json.put("result", "Display submitted");
     String response = json.toString();
-    File sound = new File(getModel().getArchiveDirectory(), id+".ppm");
-    displayEngine.show(sound);
+    File image = new File(getModel().getArchiveDirectory(), id+".ppm");
+    ImageFile imgF = new ImageFile(image);
+    displayEngine.show(imgF);
 
     ex.sendResponseHeaders(200, response.length());
     OutputStream os = ex.getResponseBody();
