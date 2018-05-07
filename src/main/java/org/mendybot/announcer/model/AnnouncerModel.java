@@ -19,7 +19,7 @@ public class AnnouncerModel
     Properties p = new Properties();
     try
     {
-      Logger.init("/var/log/mendybot", p);
+      Logger.init("/var/log/mendybot/", p);
     }
     catch (ExecuteException e)
     {

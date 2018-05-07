@@ -18,10 +18,10 @@ public class CepstralSpeaker extends CommandWidget implements SpeechWidget
   }
 
   @Override
-  public void generate(File sound, String text)
+  public void generate(File sound, SayText st)
   {
     LOG.logInfo("generate", "called for "+sound);        
-    String command = "/opt/swift/bin/swift -n Diane -o "+sound.getAbsolutePath()+" \""+text+"\"";
+    String command = "/opt/swift/bin/swift -n Diane -o "+sound.getAbsolutePath()+" \""+st.getText()+"\"";
     LOG.logInfo("generate", "command: "+command);        
     Runtime run = Runtime.getRuntime();
     try

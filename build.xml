@@ -26,12 +26,13 @@
 		<javac includeantruntime="false" srcdir="${src.dir}" destdir="${build.dir}"
 			source="1.8" target="1.8" debug="on">
 			<classpath>
-				<path location="${lib.dir}/json-20180130.jar" />
+				<path location="lib/json-20180130.jar" />
 			</classpath>
 		</javac>
 	</target>
 
   <target name="jar" depends="compile">
+    <delete file="${jar.file}" />
     <mkdir dir="${lib.dir}" />
     <copy todir="${build.dir}" flatten="true">
       <fileset dir="${src.resources}">
@@ -40,6 +41,7 @@
     </copy>
     <jar destfile="${jar.file}" basedir="${build.dir}">
       <zipgroupfileset dir="${lib.dir}" includes="*.jar" />
+      <zipgroupfileset dir="lib" includes="*.jar" />
       <manifest>
         <attribute name="Main-Class" value="${main-class}" />
       </manifest>

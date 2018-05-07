@@ -9,7 +9,6 @@ import java.io.OutputStream;
 import org.mendybot.announcer.model.AnnouncerModel;
 
 import com.sun.net.httpserver.HttpExchange;
-import com.sun.net.httpserver.HttpHandler;
 
 public class StatusHandler extends BaseHandler
 {

@@ -5,7 +5,7 @@ import java.io.File;
 public interface MatrixDisplayWidget
 {
 
-  void show(String text);
+  void show(DisplayText text);
 
   void show(File file);
 

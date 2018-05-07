@@ -1,7 +1,6 @@
 package org.mendybot.announcer.widgets.sound;
 
 import java.io.BufferedReader;
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
@@ -14,7 +13,7 @@ public class APlayer extends CommandWidget implements SoundWidget, Runnable
   private static APlayer singleton;
   private Thread t = new Thread(this);
   private boolean running;
-  private File file;
+  private PlayFile playFile;
 
   private APlayer()
   {
@@ -38,47 +37,47 @@ public class APlayer extends CommandWidget implements SoundWidget, Runnable
       catch (InterruptedException e1)
       {
       }
-      if (file != null)
+      if (playFile != null)
       {
-        play(file);
+        play(playFile);
       }
     }
   }
 
   @Override
-  public void submit(File file)
+  public void submit(PlayFile file)
   {
-    this.file = file;
+    this.playFile = file;
     synchronized (this)
     {
       notifyAll();
     }
   }
 
-  private void play(File file)
+  private void play(PlayFile pf)
   {
     synchronized (this)
     {
-      String command = "aplay -c 2 " + file.getPath();
+      String command = "aplay -c 2 " + pf.getFile().getPath();
       Runtime run = Runtime.getRuntime();
       try
       {
-        LOG.logInfo("play", "calling for " + file);
+        LOG.logInfo("play", "calling for " + pf.getFile());
         Process proc = run.exec(command);
-        LOG.logInfo("play", "starting for " + file);
+        LOG.logDebug("play", "starting for " + pf.getFile());
         proc.waitFor();
-        LOG.logInfo("play", "ending for " + file);
+        LOG.logDebug("play", "ending for " + pf.getFile());
         BufferedReader is = new BufferedReader(new InputStreamReader((proc.getInputStream())));
         String line;
         while ((line = is.readLine()) != null)
         {
-          LOG.logSevere("play", line);
+          LOG.logDebug("play", line);
         }
         is.close();
         is = new BufferedReader(new InputStreamReader((proc.getErrorStream())));
         while ((line = is.readLine()) != null)
         {
-          LOG.logSevere("play", "E: " + line);
+          LOG.logDebug("play", "E: " + line);
         }
         is.close();
       }

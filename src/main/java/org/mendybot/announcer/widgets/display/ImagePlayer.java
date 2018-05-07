@@ -82,7 +82,7 @@ public class ImagePlayer extends CommandWidget implements MatrixDisplayWidget, R
   }
 
   @Override
-  public void show(String text)
+  public void show(DisplayText text)
   {
     throw new RuntimeException("not implemented");
   }

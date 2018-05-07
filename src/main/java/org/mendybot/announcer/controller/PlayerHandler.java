@@ -5,10 +5,12 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.util.Properties;
 
+import org.json.JSONObject;
 import org.mendybot.announcer.model.AnnouncerModel;
 import org.mendybot.announcer.model.AnnouncerOs;
 import org.mendybot.announcer.widgets.sound.APlayer;
 import org.mendybot.announcer.widgets.sound.OmxPlayer;
+import org.mendybot.announcer.widgets.sound.PlayFile;
 import org.mendybot.announcer.widgets.sound.SoundWidget;
 
 import com.sun.net.httpserver.HttpExchange;
@@ -39,11 +41,13 @@ public class PlayerHandler extends BaseHandler
     Properties p = this.getProperties(ex);
     String id = p.getProperty("id");
     System.out.println("play: "+id);
-    String response = "Play request submitted";
+    JSONObject json = new JSONObject();
+    json.put("result", "Play request submitted");
+    String response = json.toString();
     if (id!= null) {
       File file = new File(getModel().getArchiveDirectory(), id + ".wav");
-      System.out.println(file+":"+file.exists());
-      soundEngine.submit(file);
+      PlayFile pf = new PlayFile(file);
+      soundEngine.submit(pf);
     } else {
       response = "Unrecognized player id: "+id;
     }

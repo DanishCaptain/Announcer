@@ -3,18 +3,13 @@ package org.mendybot.announcer.controller;
 import java.io.File;
 import java.io.IOException;
 import java.io.OutputStream;
-import java.net.URLDecoder;
 import java.util.Properties;
 
+import org.json.JSONObject;
 import org.mendybot.announcer.model.AnnouncerModel;
 import org.mendybot.announcer.model.AnnouncerOs;
 import org.mendybot.announcer.widgets.display.ImagePlayer;
 import org.mendybot.announcer.widgets.display.MatrixDisplayWidget;
-import org.mendybot.announcer.widgets.sound.APlayer;
-import org.mendybot.announcer.widgets.sound.OmxPlayer;
-import org.mendybot.announcer.widgets.sound.SoundWidget;
-import org.mendybot.announcer.widgets.speech.CepstralSpeaker;
-import org.mendybot.announcer.widgets.speech.SpeechWidget;
 
 import com.sun.net.httpserver.HttpExchange;
 
@@ -43,7 +38,9 @@ public class DisplayHandler extends BaseHandler
   {
     Properties p = getProperties(ex);
     String id = p.getProperty("id");
-    String response = "Display submitted";
+    JSONObject json = new JSONObject();
+    json.put("result", "Display submitted");
+    String response = json.toString();
     File sound = new File(getModel().getArchiveDirectory(), id+".ppm");
     displayEngine.show(sound);
 
