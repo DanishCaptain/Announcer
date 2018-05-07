@@ -62,6 +62,8 @@ public class APlayer extends CommandWidget implements SoundWidget, Runnable
       Runtime run = Runtime.getRuntime();
       try
       {
+        //amixer -c 1 sset Speaker,0 10%
+        
         LOG.logInfo("play", "calling for " + pf.getFile());
         Process proc = run.exec(command);
         LOG.logDebug("play", "starting for " + pf.getFile());
