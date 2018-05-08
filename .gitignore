@@ -4,3 +4,5 @@
 /.project
 /target/
 /MB-Announcer.jar
+Application/target
+Engine/target

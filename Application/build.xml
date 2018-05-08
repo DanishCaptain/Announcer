@@ -5,48 +5,47 @@
 	<property name="test.src.resources" value="src/test/resources" />
 	<property name="build.dir" value="target/main" />
 	<property name="test.build.dir" value="target/test" />
-	<property name="lib.dir" value="target/lib" />
+	<property name="lib.dir" value="../target/lib" />
 	<property name="master.lib.dir" value="." />
     <property name="main-class" value="org.mendybot.announcer.Announcer" />
-	<property name="jar.file" value="${lib.dir}/MB-Announcer.jar" />
+	<property name="jar.file" value="target/lib/MB-Announcer.jar" />
     <property name="version" value="0.3" />
 
 	<target name="clean">
-		<delete dir="${build.dir}" />
+		<delete dir="target/main" />
 		<delete dir="${src.build.dir}" />
-		<delete file="${jar.file}" />
+		<delete file="target/lib/MB-Announcer.jar" />
 	</target>
 
 	<target name="compile">
-		<mkdir dir="${build.dir}" />
-		<mkdir dir="${test.build.dir}" />
-		<mkdir dir="${lib.dir}" />
-		<mkdir dir="${master.lib.dir}" />
-		<echo file="${build.dir}/version.txt" append="false">${version}</echo>
-		<javac includeantruntime="false" srcdir="${src.dir}" destdir="${build.dir}"
+		<mkdir dir="target/main" />
+		<mkdir dir="target/test" />
+		<mkdir dir="target/lib" />
+		<echo file="target/main/version.txt" append="false">${version}</echo>
+		<javac includeantruntime="false" srcdir="${src.dir}" destdir="target/main"
 			source="1.8" target="1.8" debug="on">
 			<classpath>
-				<path location="lib/json-20180130.jar" />
+				<path location="../lib/json-20180130.jar" />
 			</classpath>
 		</javac>
 	</target>
 
   <target name="jar" depends="compile">
-    <delete file="${jar.file}" />
-    <mkdir dir="${lib.dir}" />
-    <copy todir="${build.dir}" flatten="true">
+    <delete file="target/lib/MB-Announcer.jar" />
+    <mkdir dir="target/lib" />
+    <copy todir="target/main" flatten="true">
       <fileset dir="${src.resources}">
         <include name="**/*.properties"/>
       </fileset>
     </copy>
-    <jar destfile="${jar.file}" basedir="${build.dir}">
-      <zipgroupfileset dir="${lib.dir}" includes="*.jar" />
-      <zipgroupfileset dir="lib" includes="*.jar" />
+    <jar destfile="target/lib/MB-Announcer.jar" basedir="target/main">
+      <zipgroupfileset dir="target/lib" includes="*.jar" />
+      <zipgroupfileset dir="../lib" includes="*.jar" />
       <manifest>
         <attribute name="Main-Class" value="${main-class}" />
       </manifest>
     </jar>
-    <copy file="${jar.file}" todir="${master.lib.dir}"/>
+    <copy file="target/lib/MB-Announcer.jar" todir="../"/>
   </target>
 
 </project>
