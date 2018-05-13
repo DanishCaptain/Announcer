@@ -1,0 +1,33 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>A-MB-Announcer</groupId>
+  <artifactId>A-MB-Announcer</artifactId>
+  <version>0.0.1-SNAPSHOT</version>
+  <build>
+    <sourceDirectory>Application/src/main/java</sourceDirectory>
+    <testSourceDirectory>Engine/src/test/java</testSourceDirectory>
+    <plugins>
+      <plugin>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <version>3.3</version>
+        <configuration>
+          <source/>
+          <target/>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+  <dependencies>
+    <dependency>
+      <groupId>org.json</groupId>
+      <artifactId>org.json</artifactId>
+      <version>LATEST</version>
+    </dependency>
+    <dependency>
+      <groupId>com.sun.net.httpserver</groupId>
+      <artifactId>http</artifactId>
+      <version>20070405</version>
+      <scope>test</scope>
+    </dependency>
+  </dependencies>
+</project>

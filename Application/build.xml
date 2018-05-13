@@ -7,7 +7,7 @@
 	<property name="test.build.dir" value="target/test" />
 	<property name="lib.dir" value="../target/lib" />
 	<property name="master.lib.dir" value="." />
-    <property name="main-class" value="org.mendybot.announcer.Announcer" />
+    <property name="main-class" value="org.mendybot.announcer.application.Announcer" />
 	<property name="jar.file" value="target/lib/MB-Announcer.jar" />
     <property name="version" value="0.3" />
 
