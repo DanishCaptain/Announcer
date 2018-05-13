@@ -24,6 +24,7 @@ import com.sun.net.httpserver.HttpExchange;
 
 public class RequestHandler extends BaseHandler
 {
+  public static final String P_IS_ALARM = "is-alarm";
   public static final int DEFAULT_SOUND_LEVEL = 65;
   public static final String P_SOUND_LEVEL = "sound-level";
   public static final String P_SAY_TEXT = "say";
@@ -81,6 +82,7 @@ public class RequestHandler extends BaseHandler
       ex.getResponseHeaders().set("Content-Type", "application/json");
       
      JSONObject jObj = new JSONObject(json);
+     boolean isAlarm = jObj.getBoolean(P_IS_ALARM);
      int soundLevel = jObj.getInt(P_SOUND_LEVEL);
      String say = jObj.getString(P_SAY_TEXT);
      int repeatSay = jObj.getInt(P_SAY_TEXT_REPEAT);
@@ -98,14 +100,25 @@ public class RequestHandler extends BaseHandler
      os.flush();
      os.close();
 
-     Effect effect = new Effect();
-     effect.setRepeat(1);
-     effect.setTValue(3);
      soundEngine.checkSoundLevel(15);
-     effectEngine.show(effect);
+     
+     if (isAlarm && false)
+     {
+//     Effect effect = new Effect();
+//     effect.setRepeat(1);
+//     effect.setTValue(3);
+//     effectEngine.show(effect);
      soundEngine.submit(new PlayFile(new File(getModel().getArchiveDirectory(), "ALARM.wav")));
-     effectEngine.show(effect);
+//     effectEngine.show(effect);
 
+     int ms = 10;
+     int t = 3;
+     ImageFile igf = new ImageFile(new File(getModel().getArchiveDirectory(), "logo.ppm"));
+     igf.setMs(ms);
+     igf.setT(t);
+     imageEngine.show(igf);
+     }
+     
      if (say != null && !"".equals(say.trim())) {
        SayText st = new SayText(say);
        st.setRepeat(repeatSay);

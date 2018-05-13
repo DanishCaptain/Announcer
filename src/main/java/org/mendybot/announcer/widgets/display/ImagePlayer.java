@@ -55,12 +55,12 @@ public class ImagePlayer extends CommandWidget implements MatrixDisplayWidget, R
     private void play(ImageFile file) {
       synchronized (this) {
           LOG.logInfo("play", "calling for " + file.getFile());
-          String command = createCommand(1);
+          String command = createCommand(1, file.getMs(), file.getT());
           CommandTool.execute("show", command + " " + file.getFile());
       }
   }
 
-    private String createCommand(int dValue)
+    private String createCommand(int dValue, int ms, int t)
     {
         /*
 Options:
@@ -107,11 +107,12 @@ Scrolls the runtext for 10 seconds
          */
         StringBuilder command = new StringBuilder(commandBase);
 //      -t 10 -D 1 runtext.ppm";
-        command.append(" --led-no-hardware-pulse");
+//        command.append(" --led-no-hardware-pulse");
         command.append(" --led-rows=32");
         command.append(" --led-cols=32");
-        command.append(" --led-chain=4");
-        command.append(" -t 10");
+//        command.append(" --led-chain=4");
+        command.append(" -t "+t);
+        command.append(" -m "+ms);
         command.append(" -D "+dValue);
         return command.toString();
     }

@@ -76,7 +76,7 @@ public class ScrollingTextPlayer extends CommandWidget implements MatrixDisplayW
      * "\t-B <r,g,b>        : Background-Color. Default 0,0,0\n"
      * "\t-O <r,g,b>        : Outline-Color, e.g. to increase contrast.\n"
      */
-    command.append(" --led-no-hardware-pulse");
+//    command.append(" --led-no-hardware-pulse");
     command.append(" -f /opt/rpi-rgb-led-matrix/fonts/"+font+".bdf");
     command.append(" --led-rows=32");
     command.append(" --led-cols=32");

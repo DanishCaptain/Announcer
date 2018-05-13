@@ -107,7 +107,7 @@ Scrolls the runtext for 10 seconds
          */
         StringBuilder command = new StringBuilder(commandBase);
 //      -t 10 -D 1 runtext.ppm";
-        command.append(" --led-no-hardware-pulse");
+//        command.append(" --led-no-hardware-pulse");
         command.append(" --led-rows=32");
         command.append(" --led-cols=32");
         command.append(" --led-chain=1");
