@@ -1,6 +1,5 @@
 package org.mendybot.announcer.widgets;
 
-public abstract class CommandWidget implements Widget
-{
+public abstract class CommandWidget implements Widget {
 
 }

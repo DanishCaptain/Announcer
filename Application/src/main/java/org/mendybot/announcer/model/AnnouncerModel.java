@@ -9,92 +9,68 @@ import java.util.Properties;
 import org.mendybot.announcer.fault.ExecuteException;
 import org.mendybot.announcer.log.Logger;
 
-public class AnnouncerModel
-{
-  private AnnouncerOs os;
-  private File archiveDir;
+public class AnnouncerModel {
+	private AnnouncerOs os;
+	private File archiveDir;
 
-  public AnnouncerModel()
-  {
-    Properties p = new Properties();
-    try
-    {
-      Logger.init("/var/log/mendybot/", p);
-    }
-    catch (ExecuteException e)
-    {
-      e.printStackTrace();
-    }
-    String osType = System.getProperty("os.name");
-    if ("linux".equalsIgnoreCase(osType))
-    {
-      initLinux();
-    } else if ("Mac OS X".equalsIgnoreCase(osType))
-    {
-      initOSX();
-    }    else
-    {
-      throw new RuntimeException("Unknown OS Type: "+osType);
-    }
-    archiveDir = new File("/opt/MendyBot/announcer/archive");
-  }
-  
-  public File getArchiveDirectory()
-  {
-    return archiveDir;
-  }
+	public AnnouncerModel() {
+		Properties p = new Properties();
+		try {
+			Logger.init("/var/log/mendybot/", p);
+		} catch (ExecuteException e) {
+			e.printStackTrace();
+		}
+		String osType = System.getProperty("os.name");
+		if ("linux".equalsIgnoreCase(osType)) {
+			initLinux();
+		} else if ("Mac OS X".equalsIgnoreCase(osType)) {
+			initOSX();
+		} else {
+			throw new RuntimeException("Unknown OS Type: " + osType);
+		}
+		archiveDir = new File("/opt/MendyBot/announcer/archive");
+	}
 
-  private void initLinux()
-  {
-    File osInfo = new File("/etc/os-release");
-    try
-    {
-      FileReader fr = new FileReader(osInfo);
-      Properties p = new Properties();
-      p.load(fr);
-      fr.close();
-      String osName = p.getProperty("ID");
-      if ("raspbian".equalsIgnoreCase(osName))
-      {
-        initRaspbian();
-      }
-      else if ("ubuntu".equalsIgnoreCase(osName))
-      {
-        initUbunto();
-      }
-      else
-      {
-        throw new RuntimeException("Unknown OS ID: "+osName);
-      }
-    }
-    catch (FileNotFoundException e)
-    {
-      throw new RuntimeException(e);
-    }
-    catch (IOException e)
-    {
-      throw new RuntimeException(e);
-    }
-  }
+	public File getArchiveDirectory() {
+		return archiveDir;
+	}
 
-  private void initOSX()
-  {
-    os = AnnouncerOs.OSX;
-  }
+	private void initLinux() {
+		File osInfo = new File("/etc/os-release");
+		try {
+			FileReader fr = new FileReader(osInfo);
+			Properties p = new Properties();
+			p.load(fr);
+			fr.close();
+			String osName = p.getProperty("ID");
+			if ("raspbian".equalsIgnoreCase(osName)) {
+				initRaspbian();
+			} else if ("ubuntu".equalsIgnoreCase(osName)) {
+				initUbunto();
+			} else {
+				throw new RuntimeException("Unknown OS ID: " + osName);
+			}
+		} catch (FileNotFoundException e) {
+			throw new RuntimeException(e);
+		} catch (IOException e) {
+			throw new RuntimeException(e);
+		}
+	}
 
-  private void initRaspbian()
-  {
-    os = AnnouncerOs.RASPBIAN;
-  }
+	private void initOSX() {
+		os = AnnouncerOs.OSX;
+	}
 
-  private void initUbunto()
-  {
-    os = AnnouncerOs.UBUNTO;
-  }
+	private void initRaspbian() {
+		os = AnnouncerOs.RASPBIAN;
+	}
 
-  public AnnouncerOs getOs()
-  {
-    return os;
-  }
+	private void initUbunto() {
+		os = AnnouncerOs.UBUNTO;
+	}
+
+	public AnnouncerOs getOs() {
+		return os;
+	}
 
 }

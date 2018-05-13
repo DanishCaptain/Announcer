@@ -1,37 +1,34 @@
 package org.mendybot.announcer.widgets.display;
 
-public class Effect
-{
-  private int dValue = 3;
-  private int repeat=1;
-  private int tValue = 10;
+public class Effect {
+	private int dValue = 3;
+	private int repeat = 1;
+	private int tValue = 10;
 
-    public Effect() {
-  }
+	public Effect() {
+	}
 
-  public int getRepeat()
-  {
-    return repeat;
-  }
+	public int getRepeat() {
+		return repeat;
+	}
 
-  public void setRepeat(int repeat)
-  {
-    this.repeat = repeat;
-  }
+	public void setRepeat(int repeat) {
+		this.repeat = repeat;
+	}
 
-  public int getDValue() {
-    return dValue;
-  }
+	public int getDValue() {
+		return dValue;
+	}
 
-  public void setDValue(int dValue) {
-    this.dValue = dValue;
-  }
+	public void setDValue(int dValue) {
+		this.dValue = dValue;
+	}
 
-    public int getTValue() {
-        return tValue;
-    }
+	public int getTValue() {
+		return tValue;
+	}
 
-    public void setTValue(int tValue) {
-        this.tValue = tValue;
-    }
+	public void setTValue(int tValue) {
+		this.tValue = tValue;
+	}
 }

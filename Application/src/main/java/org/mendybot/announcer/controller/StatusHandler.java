@@ -10,45 +10,39 @@ import org.mendybot.announcer.model.AnnouncerModel;
 
 import com.sun.net.httpserver.HttpExchange;
 
-public class StatusHandler extends BaseHandler
-{
-  private String version;
+public class StatusHandler extends BaseHandler {
+	private String version;
 
-  public StatusHandler(AnnouncerModel model)
-  {
-    super(model);
-    InputStream is = this.getClass().getClassLoader().getResourceAsStream("version.txt");
-    if (is != null) {
-      BufferedReader br = new BufferedReader(new InputStreamReader(is));
-      try
-      {
-        version = br.readLine();
-        System.out.println(version);
-      }
-      catch (IOException e)
-      {
-        version = e.getMessage();
-      }
-    } else {
-      version = "Unknown";
-    }
-  }
+	public StatusHandler(AnnouncerModel model) {
+		super(model);
+		InputStream is = this.getClass().getClassLoader().getResourceAsStream("version.txt");
+		if (is != null) {
+			BufferedReader br = new BufferedReader(new InputStreamReader(is));
+			try {
+				version = br.readLine();
+				System.out.println(version);
+			} catch (IOException e) {
+				version = e.getMessage();
+			}
+		} else {
+			version = "Unknown";
+		}
+	}
 
-  @Override
-  public void handle(HttpExchange ex) throws IOException
-  {
-    StringBuilder sb = new StringBuilder();
-    sb.append("<html>");
-    sb.append("<head>");
-    sb.append("</head>");
-    sb.append("<body>");
-    sb.append("<div><div>version: </div><div>"+version+"</div></div>");
-    sb.append("</body>");
-    sb.append("</html>");
-    ex.sendResponseHeaders(200, sb.length());
-    OutputStream os = ex.getResponseBody();
-    os.write(sb.toString().getBytes());
-    os.close();
-  }
+	@Override
+	public void handle(HttpExchange ex) throws IOException {
+		StringBuilder sb = new StringBuilder();
+		sb.append("<html>");
+		sb.append("<head>");
+		sb.append("</head>");
+		sb.append("<body>");
+		sb.append("<div><div>version: </div><div>" + version + "</div></div>");
+		sb.append("</body>");
+		sb.append("</html>");
+		ex.sendResponseHeaders(200, sb.length());
+		OutputStream os = ex.getResponseBody();
+		os.write(sb.toString().getBytes());
+		os.close();
+	}
 
 }
