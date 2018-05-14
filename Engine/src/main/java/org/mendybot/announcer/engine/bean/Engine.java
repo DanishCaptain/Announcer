@@ -5,6 +5,7 @@ import java.net.InetSocketAddress;
 
 import org.mendybot.announcer.engine.controller.StatusHandler;
 import org.mendybot.announcer.engine.model.EngineModel;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import com.sun.net.httpserver.HttpServer;
@@ -12,6 +13,8 @@ import com.sun.net.httpserver.HttpServer;
 @Component
 public class Engine
 {
+  @Value("${app.version}")
+  public static String version;
   private HttpServer server;
   private EngineModel model;
 

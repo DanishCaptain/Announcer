@@ -1,40 +1,22 @@
 package org.mendybot.announcer.engine.controller;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.io.OutputStream;
 
+import org.mendybot.announcer.engine.bean.Engine;
 import org.mendybot.announcer.engine.model.EngineModel;
+import org.springframework.beans.factory.annotation.Value;
 
 import com.sun.net.httpserver.HttpExchange;
 
 public class StatusHandler extends BaseHandler
 {
+  @Value("${app.version}")
   private String version;
 
   public StatusHandler(EngineModel model)
   {
     super(model);
-    InputStream is = this.getClass().getClassLoader().getResourceAsStream("version.txt");
-    if (is != null)
-    {
-      BufferedReader br = new BufferedReader(new InputStreamReader(is));
-      try
-      {
-        version = br.readLine();
-        System.out.println(version);
-      }
-      catch (IOException e)
-      {
-        version = e.getMessage();
-      }
-    }
-    else
-    {
-      version = "Unknown";
-    }
   }
 
   @Override
@@ -46,6 +28,7 @@ public class StatusHandler extends BaseHandler
     sb.append("</head>");
     sb.append("<body>");
     sb.append("<div><div>version: </div><div>" + version + "</div></div>");
+    sb.append("<div><div>version: </div><div>" + Engine.version + "</div></div>");
     sb.append("</body>");
     sb.append("</html>");
     ex.sendResponseHeaders(200, sb.length());
