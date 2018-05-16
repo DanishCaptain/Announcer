@@ -6,6 +6,7 @@ import org.mendybot.announcer.widgets.CommandWidget;
 
 public class OmxPlayer extends CommandWidget implements SoundWidget, Runnable {
 	private static Logger LOG = Logger.getInstance(OmxPlayer.class);
+
 	private static OmxPlayer singleton;
 	private Thread t = new Thread(this);
 	private boolean running;

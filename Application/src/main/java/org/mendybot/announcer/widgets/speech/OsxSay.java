@@ -4,8 +4,6 @@ import org.mendybot.announcer.log.Logger;
 import org.mendybot.announcer.tools.CommandTool;
 import org.mendybot.announcer.widgets.CommandWidget;
 
-import java.io.File;
-
 public class OsxSay extends CommandWidget implements SpeechWidget {
 	private final static Logger LOG = Logger.getInstance(OsxSay.class);
 	private static OsxSay singleton;

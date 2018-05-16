@@ -26,28 +26,28 @@ public class StatusHandler extends BaseHandler
   @Override
   public void handle(HttpExchange ex) throws IOException
   {
-    
+
     try
     {
       JSONObject obj = new JSONObject();
       obj.put("version", getModel().getVersion());
       JSONObject archive = new JSONObject();
       obj.put("archive", archive);
-      
+
       JSONArray sFiles = new JSONArray();
       archive.put("sound-files", sFiles);
       List<File> soundFiles = getModel().getSoundFiles();
       for (File file : soundFiles) {
         sFiles.put(file.getName());
       }
-      
+
       JSONArray iFiles = new JSONArray();
       archive.put("image-files", iFiles);
       List<File> imageFiles = getModel().getImageFiles();
       for (File file : imageFiles) {
         iFiles.put(file.getName());
       }
-      
+
       String json = obj.toString();
       ex.sendResponseHeaders(200, json.length());
       OutputStream os = ex.getResponseBody();

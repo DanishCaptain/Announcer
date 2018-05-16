@@ -4,10 +4,9 @@ import java.io.IOException;
 import java.net.InetSocketAddress;
 
 import org.mendybot.announcer.engine.controller.StatusHandler;
-import org.mendybot.announcer.engine.fault.ExecuteException;
 import org.mendybot.announcer.engine.model.EngineModel;
+import org.mendybot.announcer.fault.ExecuteException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import com.sun.net.httpserver.HttpServer;
@@ -25,9 +24,9 @@ public class Engine
 
   public void init() throws ExecuteException
   {
-
     try
     {
+      System.out.println("port: "+8000);
       server = HttpServer.create(new InetSocketAddress(8000), 0);
 
       server.createContext("/status", new StatusHandler(model));

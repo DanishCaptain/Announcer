@@ -1,7 +1,7 @@
 package org.mendybot.announcer.engine;
 
 import org.mendybot.announcer.engine.bean.Engine;
-import org.mendybot.announcer.engine.fault.ExecuteException;
+import org.mendybot.announcer.fault.ExecuteException;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ApplicationContext;

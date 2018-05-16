@@ -5,8 +5,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 
-import org.mendybot.announcer.engine.fault.ExecuteException;
-import org.mendybot.announcer.engine.log.Logger;
+import org.mendybot.announcer.fault.ExecuteException;
+import org.mendybot.announcer.log.LogLevel;
+import org.mendybot.announcer.log.LogMode;
+import org.mendybot.announcer.log.Logger;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
@@ -18,22 +20,14 @@ public class EngineModel
   
   @Value("${version}")
   private String version;
-  @Value("${logging.home}")
-  private String logHome;
   @Value("${archive.home}")
   private String archiveHome;
-    
+
   public EngineModel()
   {
     Properties p = new Properties();
-    try
-    {
-      Logger.init(logHome, p);
-    }
-    catch (ExecuteException e)
-    {
-      e.printStackTrace();
-    }
+    p.put("log-mode", "NORMAL");
+    p.put("log-level", "INFO");
   }
 
   public String getVersion()

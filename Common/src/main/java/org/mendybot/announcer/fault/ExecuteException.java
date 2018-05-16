@@ -1,4 +1,4 @@
-package org.mendybot.announcer.engine.fault;
+package org.mendybot.announcer.fault;
 
 import java.io.PrintStream;
 import java.io.PrintWriter;

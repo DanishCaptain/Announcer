@@ -19,8 +19,6 @@ server:
 
 spring:
   profiles: dev
-logging:
-  home: logs
 archive:
   home: archive
 
@@ -28,8 +26,6 @@ archive:
 
 spring:
   profiles: prod
-logging:
-  home: /var/log/mendybot/
 archive:
   home: /opt/mendybot/announcer/archive
   

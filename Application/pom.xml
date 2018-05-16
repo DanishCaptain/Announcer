@@ -1,27 +1,35 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
-  <groupId>A-MB-Announcer</groupId>
-  <artifactId>A-MB-Announcer</artifactId>
-  <version>0.0.1-SNAPSHOT</version>
+  <groupId>org.mendybot.announcer</groupId>
+  <artifactId>application</artifactId>
+  <version>0.0.1</version>
+  <properties>
+    <java.version>1.8</java.version>
+  </properties>
   <build>
-    <sourceDirectory>Application/src/main/java</sourceDirectory>
-    <testSourceDirectory>Engine/src/test/java</testSourceDirectory>
+    <sourceDirectory>src/main/java</sourceDirectory>
+    <testSourceDirectory>src/test/java</testSourceDirectory>
     <plugins>
       <plugin>
         <artifactId>maven-compiler-plugin</artifactId>
         <version>3.3</version>
         <configuration>
-          <source/>
-          <target/>
+          <source>${java.version}</source>
+          <target>${java.version}</target>
         </configuration>
       </plugin>
     </plugins>
   </build>
   <dependencies>
     <dependency>
+      <groupId>org.mendybot.announcer</groupId>
+      <artifactId>common</artifactId>
+      <version>0.0.1</version>
+    </dependency>
+    <dependency>
       <groupId>org.json</groupId>
-      <artifactId>org.json</artifactId>
-      <version>LATEST</version>
+      <artifactId>json</artifactId>
+      <version>20180130</version>
     </dependency>
     <dependency>
       <groupId>com.sun.net.httpserver</groupId>
