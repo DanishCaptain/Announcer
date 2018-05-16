@@ -1,0 +1,35 @@
+version: 0.0.1
+  
+logging:
+  level:
+    .: error
+    org.springframework: ERROR
+    com.mkyong: ERROR
+
+spring:
+  profiles:
+    active: "dev"
+  main:
+    banner-mode: "off"
+
+server:
+  email: default@mkyong.com
+
+---
+
+spring:
+  profiles: dev
+logging:
+  home: logs
+archive:
+  home: archive
+
+---
+
+spring:
+  profiles: prod
+logging:
+  home: /var/log/mendybot/
+archive:
+  home: /opt/mendybot/announcer/archive
+  

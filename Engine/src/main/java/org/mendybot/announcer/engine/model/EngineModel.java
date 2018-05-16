@@ -1,55 +1,74 @@
 package org.mendybot.announcer.engine.model;
 
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Properties;
 
 import org.mendybot.announcer.engine.fault.ExecuteException;
 import org.mendybot.announcer.engine.log.Logger;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 
+@Component
 public class EngineModel
 {
-  private File archiveDir;
-
+//  @Autowired
+//  private AppProperties appProperties;  
+  
+  @Value("${version}")
+  private String version;
+  @Value("${logging.home}")
+  private String logHome;
+  @Value("${archive.home}")
+  private String archiveHome;
+    
   public EngineModel()
   {
     Properties p = new Properties();
     try
     {
-      Logger.init("/var/log/mendybot/", p);
+      Logger.init(logHome, p);
     }
     catch (ExecuteException e)
     {
       e.printStackTrace();
     }
-    archiveDir = new File("/opt/mendybot/announcer/archive");
   }
 
-  public File getArchiveDirectory()
+  public String getVersion()
   {
-    return archiveDir;
+    return version;
   }
 
-  private void initLinux()
+  public List<File> getSoundFiles()
   {
-    File osInfo = new File("/etc/os-release");
-    try
+    ArrayList<File> list = new ArrayList<>();
+    File archiveDir = new File(archiveHome);
+    File[] files = archiveDir.listFiles();
+    for (File f : files)
     {
-      FileReader fr = new FileReader(osInfo);
-      Properties p = new Properties();
-      p.load(fr);
-      fr.close();
+      if (f.getName().endsWith(".wav")) {
+        if (!f.getName().equals("say.wav")) {
+          list.add(f);
+        }
+      }
     }
-    catch (FileNotFoundException e)
+    return list;
+  }
+
+  public List<File> getImageFiles()
+  {
+    ArrayList<File> list = new ArrayList<>();
+    File archiveDir = new File(archiveHome);
+    File[] files = archiveDir.listFiles();
+    for (File f : files)
     {
-      throw new RuntimeException(e);
+      if (f.getName().endsWith(".ppm")) {
+        list.add(f);
+      }
     }
-    catch (IOException e)
-    {
-      throw new RuntimeException(e);
-    }
+    return list;
   }
 
 }

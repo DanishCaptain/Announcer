@@ -4,7 +4,9 @@ import java.io.IOException;
 import java.net.InetSocketAddress;
 
 import org.mendybot.announcer.engine.controller.StatusHandler;
+import org.mendybot.announcer.engine.fault.ExecuteException;
 import org.mendybot.announcer.engine.model.EngineModel;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
@@ -13,17 +15,15 @@ import com.sun.net.httpserver.HttpServer;
 @Component
 public class Engine
 {
-  @Value("${app.version}")
-  public static String version;
-  private HttpServer server;
+  @Autowired
   private EngineModel model;
+  private HttpServer server;
 
   public Engine()
   {
-    model = new EngineModel();
   }
 
-  public void init()
+  public void init() throws ExecuteException
   {
 
     try
@@ -35,13 +35,12 @@ public class Engine
     }
     catch (IOException e)
     {
-      // TODO Auto-generated catch block
-      e.printStackTrace();
+      throw new ExecuteException(e);
     }
 
   }
 
-  public void start()
+  public void start() throws ExecuteException
   {
     server.start();
   }
