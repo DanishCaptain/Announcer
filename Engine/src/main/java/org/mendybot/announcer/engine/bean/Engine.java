@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.net.InetSocketAddress;
 
 import org.mendybot.announcer.engine.controller.StatusHandler;
+import org.mendybot.announcer.engine.controller.SyncHandler;
 import org.mendybot.announcer.engine.model.EngineModel;
 import org.mendybot.announcer.fault.ExecuteException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,8 +29,8 @@ public class Engine
     {
       System.out.println("port: "+8000);
       server = HttpServer.create(new InetSocketAddress(8000), 0);
-
-      server.createContext("/status", new StatusHandler(model));
+      server.createContext(SyncHandler.CONTEXT, new SyncHandler(model));
+      server.createContext(StatusHandler.CONTEXT, new StatusHandler(model));
       server.setExecutor(null); // creates a default executor
     }
     catch (IOException e)

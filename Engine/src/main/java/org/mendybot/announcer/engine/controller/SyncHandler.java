@@ -16,13 +16,13 @@ import org.springframework.beans.factory.annotation.Value;
 
 import com.sun.net.httpserver.HttpExchange;
 
-public class StatusHandler extends BaseHandler
+public class SyncHandler extends BaseHandler
 {
-  public static final String CONTEXT = "/status";
+  public static final String CONTEXT = "/sync";
   @Value("${app.version}")
   private String version;
 
-  public StatusHandler(EngineModel model)
+  public SyncHandler(EngineModel model)
   {
     super(model);
   }

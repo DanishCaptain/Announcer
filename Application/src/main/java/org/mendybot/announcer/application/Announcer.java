@@ -21,7 +21,6 @@ import org.mendybot.announcer.widgets.display.ScrollingTextPlayer;
 import com.sun.net.httpserver.HttpServer;
 import org.mendybot.announcer.widgets.sound.APlayer;
 import org.mendybot.announcer.widgets.sound.OmxPlayer;
-import org.mendybot.announcer.widgets.sound.SoundWidget;
 
 public class Announcer {
 	private AnnouncerModel model;
