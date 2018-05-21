@@ -7,9 +7,9 @@
 	<property name="test.build.dir" value="target/test" />
 	<property name="lib.dir" value="../target/lib" />
 	<property name="master.lib.dir" value="." />
-    <property name="main-class" value="org.mendybot.announcer.application.Announcer" />
+	<property name="main-class" value="org.mendybot.announcer.application.Announcer" />
 	<property name="jar.file" value="target/lib/MB-Announcer.jar" />
-    <property name="version" value="0.3" />
+	<property name="version" value="0.3" />
 
 	<target name="clean">
 		<delete dir="target/main" />
@@ -30,22 +30,22 @@
 		</javac>
 	</target>
 
-  <target name="jar" depends="compile">
-    <delete file="target/lib/MB-Announcer.jar" />
-    <mkdir dir="target/lib" />
-    <copy todir="target/main" flatten="true">
-      <fileset dir="${src.resources}">
-        <include name="**/*.properties"/>
-      </fileset>
-    </copy>
-    <jar destfile="target/lib/MB-Announcer.jar" basedir="target/main">
-      <zipgroupfileset dir="target/lib" includes="*.jar" />
-      <zipgroupfileset dir="../lib" includes="*.jar" />
-      <manifest>
-        <attribute name="Main-Class" value="${main-class}" />
-      </manifest>
-    </jar>
-    <copy file="target/lib/MB-Announcer.jar" todir="../"/>
-  </target>
+	<target name="jar" depends="compile">
+		<delete file="target/lib/MB-Announcer.jar" />
+		<mkdir dir="target/lib" />
+		<copy todir="target/main" flatten="true">
+			<fileset dir="${src.resources}">
+				<include name="**/*.properties" />
+			</fileset>
+		</copy>
+		<jar destfile="target/lib/MB-Announcer.jar" basedir="target/main">
+			<zipgroupfileset dir="target/lib" includes="*.jar" />
+			<zipgroupfileset dir="../lib" includes="*.jar" />
+			<manifest>
+				<attribute name="Main-Class" value="${main-class}" />
+			</manifest>
+		</jar>
+		<copy file="target/lib/MB-Announcer.jar" todir="../" />
+	</target>
 
 </project>

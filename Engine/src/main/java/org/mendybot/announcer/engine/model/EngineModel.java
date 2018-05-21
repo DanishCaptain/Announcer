@@ -4,11 +4,13 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map.Entry;
 import java.util.Properties;
 import java.util.UUID;
 
 import org.mendybot.announcer.common.Resource;
 import org.mendybot.announcer.common.ResourceType;
+import org.mendybot.announcer.common.model.dto.SyncRequest;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
@@ -25,6 +27,8 @@ public class EngineModel
   private String archiveHome;
 
   private boolean initialized;
+
+  private HashMap<SyncRequest, Long> cubesMap = new HashMap<>();
 
   public EngineModel()
   {
@@ -92,6 +96,21 @@ public class EngineModel
     if (list == null) {
       list = new ArrayList<>();
       rMap.put(ResourceType.IMAGE, list);
+    }
+    return list;
+  }
+
+  public void handle(SyncRequest request)
+  {
+    System.out.println("-->"+request);
+    cubesMap.put(request, System.currentTimeMillis());
+  }
+
+  public List<SyncRequest> getCubes()
+  {
+    ArrayList<SyncRequest> list = new ArrayList<>();
+    for (Entry<SyncRequest, Long> e : cubesMap.entrySet()) {
+      list.add(e.getKey());
     }
     return list;
   }
