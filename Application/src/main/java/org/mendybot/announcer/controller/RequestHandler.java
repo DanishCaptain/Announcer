@@ -94,7 +94,7 @@ public class RequestHandler extends BaseHandler {
 
 				soundEngine.checkSoundLevel(15);
 
-				if (isAlarm) {
+				if (isAlarm && false) {
 					// Effect effect = new Effect();
 					// effect.setRepeat(1);
 					// effect.setTValue(3);

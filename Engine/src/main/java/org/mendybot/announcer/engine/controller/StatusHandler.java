@@ -10,7 +10,6 @@ import java.util.Map.Entry;
 import org.mendybot.announcer.common.Resource;
 import org.mendybot.announcer.common.model.dto.Archive;
 import org.mendybot.announcer.common.model.dto.ArchiveResource;
-import org.mendybot.announcer.common.model.dto.Cube;
 import org.mendybot.announcer.common.model.dto.StatusRequest;
 import org.mendybot.announcer.common.model.dto.StatusResponse;
 import org.mendybot.announcer.common.model.dto.SyncRequest;
@@ -74,7 +73,6 @@ public class StatusHandler extends BaseHandler
             for (Resource r : soundFiles) {
               File file = r.getFile();
               ArchiveResource ar = new ArchiveResource();
-              ar.setUuid(r.getUuid());
               ar.setName(file.getName());
               ar.setSize(file.length());
               ar.setTs(file.lastModified());
@@ -85,7 +83,6 @@ public class StatusHandler extends BaseHandler
             for (Resource r : imageFiles) {
               File file = r.getFile();
               ArchiveResource ar = new ArchiveResource();
-              ar.setUuid(r.getUuid());
               ar.setName(file.getName());
               ar.setSize(file.length());
               ar.setTs(file.lastModified());
@@ -94,10 +91,7 @@ public class StatusHandler extends BaseHandler
             
             List<SyncRequest> cubes = getModel().getCubes();
             for (SyncRequest sr : cubes) {
-              Cube c = new Cube();
-              c.setUuid(sr.getUuid());
-              c.setName(sr.getName());
-              archive.addCube(c);
+              response.addCube(sr.getCube());
             }
 
             returnCode = 200;

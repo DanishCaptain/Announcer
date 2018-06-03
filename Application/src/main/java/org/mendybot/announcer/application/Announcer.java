@@ -38,8 +38,9 @@ public class Announcer {
 
 		try {
 			HttpServer server = HttpServer.create(new InetSocketAddress(8000), 0);
+			AnnouncerHandler announcer = new AnnouncerHandler(model);
 
-			server.createContext("/announce", new AnnouncerHandler(model));
+			server.createContext("/announce", announcer);
 			server.createContext("/status", new StatusHandler(model));
 			server.createContext("/play", new PlayerHandler(model));
 			server.createContext("/display", new DisplayHandler(model));
@@ -51,6 +52,7 @@ public class Announcer {
 			if (model.getOs() == AnnouncerOs.RASPBIAN) {
 				displayNetworkAddress();
 			}
+			new SyncHeartbeat(model, announcer);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

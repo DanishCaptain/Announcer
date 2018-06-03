@@ -10,6 +10,7 @@ import java.util.Map.Entry;
 import org.mendybot.announcer.common.Resource;
 import org.mendybot.announcer.common.model.dto.Archive;
 import org.mendybot.announcer.common.model.dto.ArchiveResource;
+import org.mendybot.announcer.common.model.dto.Cube;
 import org.mendybot.announcer.common.model.dto.SyncRequest;
 import org.mendybot.announcer.common.model.dto.SyncResponse;
 import org.mendybot.announcer.engine.model.EngineModel;
@@ -65,7 +66,8 @@ public class SyncHandler extends BaseHandler
         {
           try
           {
-            response.setName(request.getName());
+            Cube cube = request.getCube();
+            response.setName(cube.getName());
             // response.setHost(ex.getRemoteAddress().getHostString());
             response.setHost(ex.getRemoteAddress().getHostName());
             response.setIp(ex.getRemoteAddress().getAddress().getHostAddress());
@@ -79,7 +81,6 @@ public class SyncHandler extends BaseHandler
             {
               File file = r.getFile();
               ArchiveResource ar = new ArchiveResource();
-              ar.setUuid(r.getUuid());
               ar.setName(file.getName());
               ar.setSize(file.length());
               ar.setTs(file.lastModified());
@@ -91,12 +92,14 @@ public class SyncHandler extends BaseHandler
             {
               File file = r.getFile();
               ArchiveResource ar = new ArchiveResource();
-              ar.setUuid(r.getUuid());
               ar.setName(file.getName());
               ar.setSize(file.length());
               ar.setTs(file.lastModified());
               archive.addImageFile(ar);
             }
+            
+            response.setAnnouncements(getModel().takeAnnouncements(cube.getName()));
+            
             returnCode = 200;
           }
           catch (Exception e)

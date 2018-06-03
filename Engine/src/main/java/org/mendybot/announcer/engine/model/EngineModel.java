@@ -10,6 +10,7 @@ import java.util.UUID;
 
 import org.mendybot.announcer.common.Resource;
 import org.mendybot.announcer.common.ResourceType;
+import org.mendybot.announcer.common.model.dto.Announcement;
 import org.mendybot.announcer.common.model.dto.SyncRequest;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -20,6 +21,9 @@ public class EngineModel
 //  @Autowired
 //  private AppProperties appProperties;  
   private HashMap<ResourceType, List<Resource>> rMap = new HashMap<>();
+  private HashMap<String, SyncRequest> cubesNamesMap = new HashMap<>();
+  private HashMap<String, Long> cubesTimesMap = new HashMap<>();
+  private HashMap<String, ArrayList<Announcement>> announcementsMap = new HashMap<>();
   
   @Value("${version}")
   private String version;
@@ -27,8 +31,7 @@ public class EngineModel
   private String archiveHome;
 
   private boolean initialized;
-
-  private HashMap<SyncRequest, Long> cubesMap = new HashMap<>();
+  private File archiveDir;
 
   public EngineModel()
   {
@@ -39,7 +42,7 @@ public class EngineModel
 
   private void initFiles()
   {
-    File archiveDir = new File(archiveHome);
+    archiveDir = new File(archiveHome);
     File[] files = archiveDir.listFiles();
     for (File f : files)
     {
@@ -102,17 +105,70 @@ public class EngineModel
 
   public void handle(SyncRequest request)
   {
-    System.out.println("-->"+request);
-    cubesMap.put(request, System.currentTimeMillis());
+    cubesNamesMap.put(request.getCube().getName(), request);
+    cubesTimesMap.put(request.getCube().getName(), System.currentTimeMillis());
+//    System.out.println("-->"+request);
+//    System.out.println("i--->"+request.getCube().getArchive().getImageFiles());
+//    System.out.println("s--->"+request.getCube().getArchive().getSoundFiles());
   }
 
   public List<SyncRequest> getCubes()
   {
     ArrayList<SyncRequest> list = new ArrayList<>();
-    for (Entry<SyncRequest, Long> e : cubesMap.entrySet()) {
-      list.add(e.getKey());
+    for (Entry<String, SyncRequest> e : cubesNamesMap.entrySet()) {
+      list.add(e.getValue());
     }
     return list;
+  }
+
+  public File getArchiveDirectory()
+  {
+    return archiveDir;
+  }
+  
+  /*
+  public List<Announcement> getAllAnnouncements()
+  {
+    ArrayList<Announcement> list = new ArrayList<>();
+    synchronized (announcementsMap) {
+      for (Entry<String, ArrayList<Announcement>> e : announcementsMap.entrySet()) {
+        list.addAll(e);
+      }
+    }
+    return list;
+  }
+  */
+
+  @SuppressWarnings("unchecked")
+  public List<Announcement> takeAnnouncements(String cubeName)
+  {
+    ArrayList<Announcement> working;
+    synchronized (announcementsMap) {
+      ArrayList<Announcement> archive = announcementsMap.get(cubeName);
+      if (archive == null) {
+        archive = new ArrayList<>();
+        announcementsMap.put(cubeName, archive);
+      }
+      working = (ArrayList<Announcement>) archive.clone();
+      archive.clear();
+    }
+    return working;
+  }
+
+  public void addAnnouncement(Announcement q)
+  {
+    for (Entry<String, SyncRequest> e : cubesNamesMap.entrySet()) {
+      String cubeName = e.getKey();
+      synchronized (announcementsMap) {
+        ArrayList<Announcement> archive = announcementsMap.get(cubeName);
+        if (archive == null) {
+          archive = new ArrayList<>();
+          announcementsMap.put(cubeName, archive);
+        }
+        archive.add(q);
+      }
+    }
+
   }
 
 }

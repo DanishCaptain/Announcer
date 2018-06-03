@@ -1,7 +1,11 @@
 package org.mendybot.announcer.common.model.dto;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class StatusResponse
 {
+  private ArrayList<Cube> cubes = new ArrayList<>();
   private boolean success = true;
   private String name;
   private String host;
@@ -75,4 +79,23 @@ public class StatusResponse
   {
     return message;
   }
+
+  public void addCube(Cube c)
+  {
+    cubes.add(c);
+  }
+  
+  public List<Cube> getCubes() {
+    ArrayList<Cube> list = new ArrayList<>();
+    list.addAll(cubes);
+    return list;    
+  }
+
+  public void setCubes(List<Cube> list) {
+    cubes.clear();
+    if (list != null) {
+      cubes.addAll(list);
+    }
+  }
+
 }

@@ -1,9 +1,9 @@
 package org.mendybot.announcer.common.model.dto;
 
-public class SyncRequest
+public class QuickAnnouncementRequest
 {
   private String key;
-  private Cube cube;
+  private String text;
 
   public String getKey()
   {
@@ -15,19 +15,20 @@ public class SyncRequest
     this.key = key;
   }
 
-  public Cube getCube()
+  public String getText()
   {
-    return cube;
+    return text;
   }
 
-  public void setCube(Cube cube)
+  public void setText(String text)
   {
-    this.cube = cube;
+    this.text = text;
   }
 
   @Override
   public int hashCode()
   {
-    return cube.getName().hashCode();
+    return text.hashCode();
   }
+
 }

@@ -1,7 +1,11 @@
 package org.mendybot.announcer.common.model.dto;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class SyncResponse
 {
+  private ArrayList<Announcement> announcements = new ArrayList<>();
   private boolean success = true;
   private String name;
   private String host;
@@ -76,9 +80,28 @@ public class SyncResponse
     return message;
   }
   
+  public void addAnnouncement(Announcement announcement)
+  {
+    announcements.add(announcement);
+  }
+  
+  public List<Announcement> getAnnouncements() {
+    ArrayList<Announcement> list = new ArrayList<>();
+    list.addAll(announcements);
+    return list;    
+  }
+
+  public void setAnnouncements(List<Announcement> list) {
+    announcements.clear();
+    if (list != null) {
+      announcements.addAll(list);
+    }
+  }
+
   @Override
   public String toString()
   {
-    return success+":"+name+":"+host+":"+ip+":"+version+":"+archive+":"+message;
+    return success+":"+name+":"+host+":"+ip+":"+version+":"+archive+":"+announcements+":"+message;
   }
+
 }

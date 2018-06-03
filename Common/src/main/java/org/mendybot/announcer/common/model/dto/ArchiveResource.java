@@ -1,23 +1,14 @@
 package org.mendybot.announcer.common.model.dto;
 
-import java.util.UUID;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class ArchiveResource
 {
-  private UUID uuid;
   private String name;
   private long size;
   private long ts;
-
-  public UUID getUuid()
-  {
-    return uuid;
-  }
-
-  public void setUuid(UUID uuid)
-  {
-    this.uuid = uuid;
-  }
+  private String tsString;
 
   public String getName()
   {
@@ -46,12 +37,36 @@ public class ArchiveResource
 
   public void setTs(long ts)
   {
+    SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");
+    tsString = sdf.format(new Date(ts));
     this.ts = ts;
   }
 
   @Override
   public String toString()
   {
-    return uuid+":"+name+":"+size+":"+ts;
+    return name+":"+size+":"+tsString;
   }
+  
+  @Override
+  public int hashCode()
+  {
+    return name.hashCode();
+  }
+
+  @Override
+  public boolean equals(Object o)
+  {
+    boolean result = false;;
+    if (o instanceof ArchiveResource) {
+      result = name.equals(((ArchiveResource)o).name);
+    }
+    return result;
+  }
+
+  public String getTsString()
+  {
+    return tsString;
+  }
+
 }

@@ -7,7 +7,6 @@ public class Archive
 {
   private ArrayList<ArchiveResource> sList = new ArrayList<>();
   private ArrayList<ArchiveResource> iList = new ArrayList<>();
-  private ArrayList<Cube> cList = new ArrayList<>();
 
   public void addSoundFile(ArchiveResource ar)
   {
@@ -45,28 +44,25 @@ public class Archive
     }
   }
 
-  public void addCube(Cube c)
-  {
-    cList.add(c);
-  }
-  
-  public List<Cube> getCubes() {
-    ArrayList<Cube> list = new ArrayList<>();
-    list.addAll(cList);
-    return list;    
-  }
-
-  public void setCubes(List<Cube> list) {
-    cList.clear();
-    if (list != null) {
-      cList.addAll(list);
-    }
-  }
-
   @Override
   public String toString()
   {
     return sList+":"+iList;
+  }
+
+  public ArchiveResource lookupArchiveResource(String name)
+  {
+    for (ArchiveResource ar : sList) {
+      if (ar.getName().equals(name)) {
+        return ar;
+      }
+    }
+    for (ArchiveResource ar : iList) {
+      if (ar.getName().equals(name)) {
+        return ar;
+      }
+    }
+    return null;
   }
 
 }
