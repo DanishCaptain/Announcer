@@ -6,8 +6,9 @@ public class LongAnnouncementRequest
 {
   private UUID uuid;
   private String key;
-  private String text;
-  private ArchiveResource sound
+  private String displayText;
+  private String sayText;
+  private ArchiveResource sound;
 
   public UUID getUuid()
   {
@@ -29,14 +30,24 @@ public class LongAnnouncementRequest
     this.key = key;
   }
 
-  public String getText()
+  public String getDisplayText()
   {
-    return text;
+    return displayText;
   }
 
-  public void setText(String text)
+  public void setDisplayText(String text)
   {
-    this.text = text;
+    this.displayText = text;
+  }
+
+  public String getSayText()
+  {
+    return sayText;
+  }
+
+  public void setSayText(String text)
+  {
+    this.sayText = text;
   }
 
   public ArchiveResource getSound()
@@ -52,7 +63,7 @@ public class LongAnnouncementRequest
   @Override
   public int hashCode()
   {
-    return text.hashCode();
+    return uuid.hashCode();
   }
 
 }

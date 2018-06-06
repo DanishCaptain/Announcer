@@ -3,6 +3,7 @@ package org.mendybot.announcer.engine.bean;
 import java.io.IOException;
 import java.net.InetSocketAddress;
 
+import org.mendybot.announcer.engine.controller.LongHandler;
 import org.mendybot.announcer.engine.controller.QuickHandler;
 import org.mendybot.announcer.engine.controller.ResourceHandler;
 import org.mendybot.announcer.engine.controller.StatusHandler;
@@ -35,6 +36,7 @@ public class Engine
       server.createContext(StatusHandler.CONTEXT, new StatusHandler(model));
       server.createContext(ResourceHandler.CONTEXT, new ResourceHandler(model));
       server.createContext(QuickHandler.CONTEXT, new QuickHandler(model));
+      server.createContext(LongHandler.CONTEXT, new LongHandler(model));
       server.setExecutor(null); // creates a default executor
     }
     catch (IOException e)

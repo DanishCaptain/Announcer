@@ -1,5 +1,6 @@
 package org.mendybot.announcer.controller;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.net.URLDecoder;
@@ -9,6 +10,7 @@ import java.util.Properties;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.mendybot.announcer.common.model.dto.Announcement;
+import org.mendybot.announcer.common.model.dto.ArchiveResource;
 import org.mendybot.announcer.fault.ExecuteException;
 import org.mendybot.announcer.model.AnnouncerModel;
 import org.mendybot.announcer.model.AnnouncerOs;
@@ -17,6 +19,7 @@ import org.mendybot.announcer.widgets.display.MatrixDisplayWidget;
 import org.mendybot.announcer.widgets.display.ScrollingTextPlayer;
 import org.mendybot.announcer.widgets.sound.APlayer;
 import org.mendybot.announcer.widgets.sound.OmxPlayer;
+import org.mendybot.announcer.widgets.sound.PlayFile;
 import org.mendybot.announcer.widgets.sound.SoundWidget;
 import org.mendybot.announcer.widgets.speech.CepstralSpeaker;
 import org.mendybot.announcer.widgets.speech.OsxSay;
@@ -75,7 +78,11 @@ public class AnnouncerHandler extends BaseHandler {
 		for (Announcement a : announcements) {
 			getModel().addPlayed(a);
 			try {
-				play(a.getDisplayText(), a.getSayText());
+				if (a.getSound() != null) {
+					play(a.getDisplayText(), a.getSound());
+				} else {
+					play(a.getDisplayText(), a.getSayText());
+				}
 			} catch (IOException e) {
 				new ExecuteException(e);
 			}
@@ -84,11 +91,22 @@ public class AnnouncerHandler extends BaseHandler {
 	}
 
 	private void play(String displayText, String sayText) throws IOException {
+		DisplayText dt = new DisplayText(displayText);
+		displayEngine.show(dt);
 		SayText st = new SayText(sayText);
 		st.setRepeat(1);
 		st.setSoundLevel(DEFAULT_SOUND_LEVEL);
 		speakerEngine.say(st);
+	}
+
+	private void play(String displayText, ArchiveResource sound) {
 		DisplayText dt = new DisplayText(displayText);
 		displayEngine.show(dt);
+		PlayFile file = new PlayFile(new File(getModel().getArchiveDirectory(), sound.getName()));
+		file.setRepeat(1);
+		file.setSoundLevel(DEFAULT_SOUND_LEVEL);
+		soundEngine.checkSoundLevel(file.getSoundLevel());
+		soundEngine.submit(file);
 	}
+
 }

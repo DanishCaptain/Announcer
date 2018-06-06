@@ -13,6 +13,8 @@ import java.net.URL;
 
 import org.mendybot.announcer.common.model.dto.ArchiveResource;
 import org.mendybot.announcer.common.model.dto.Cube;
+import org.mendybot.announcer.common.model.dto.LongAnnouncementRequest;
+import org.mendybot.announcer.common.model.dto.LongAnnouncementResponse;
 import org.mendybot.announcer.common.model.dto.QuickAnnouncementRequest;
 import org.mendybot.announcer.common.model.dto.QuickAnnouncementResponse;
 import org.mendybot.announcer.common.model.dto.ResourceRequest;
@@ -241,6 +243,51 @@ public class EngineClient
 
       BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
       QuickAnnouncementResponse response = gson.fromJson(in, QuickAnnouncementResponse.class);
+      return response;
+    }
+    catch (MalformedURLException e)
+    {
+      throw new ExecuteException(e);
+    }
+    catch (IOException e)
+    {
+      throw new ExecuteException(e);
+    }
+  }
+
+  public LongAnnouncementResponse send(LongAnnouncementRequest request) throws ExecuteException
+  {
+    String url = "http://innovannounce.bks.net:8080/announcement-request";
+    try
+    {
+      URL obj = new URL(url);
+      HttpURLConnection con = (HttpURLConnection) obj.openConnection();
+
+      con.setDoOutput(true);
+      con.setDoInput(true);
+
+      con.setRequestProperty("Content-Type", "application/json");
+      con.setRequestProperty("Accept", "application/json");
+      con.setRequestProperty("User-Agent", USER_AGENT);
+      con.setRequestProperty("Accept-Language", "en-US,en;q=0.5");
+      con.setRequestMethod("POST");
+
+      Gson gson = new Gson();
+      request.setKey(InterfaceTool.PASS_KEY);
+
+      String json = gson.toJson(request);
+      DataOutputStream wr = new DataOutputStream(con.getOutputStream());
+      // wr.writeBytes(urlParameters);
+      wr.writeBytes(json);
+      wr.flush();
+      wr.close();
+
+      int responseCode = con.getResponseCode();
+      LOG.logDebug("callResource", "Sending 'POST' request to URL : " + url);
+      LOG.logDebug("callResource", "Response Code : " + responseCode);
+
+      BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
+      LongAnnouncementResponse response = gson.fromJson(in, LongAnnouncementResponse.class);
       return response;
     }
     catch (MalformedURLException e)

@@ -7,6 +7,7 @@ public final class Announcement
   private UUID uuid;
   private String displayText;
   private String sayText;
+  private ArchiveResource sound;
   private boolean played;
 
   public UUID getUuid()
@@ -39,6 +40,16 @@ public final class Announcement
     sayText = text;
   }
 
+  public ArchiveResource getSound()
+  {
+    return sound;
+  }
+  
+  public void setSound(ArchiveResource sound)
+  {
+    this.sound = sound;
+  }
+  
   public void setPlayed(boolean played)
   {
     this.played = played;
@@ -48,4 +59,5 @@ public final class Announcement
   {
     return played;
   }
+
 }
