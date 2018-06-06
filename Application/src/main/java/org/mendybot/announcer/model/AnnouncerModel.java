@@ -4,12 +4,16 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Properties;
 
+import org.mendybot.announcer.common.model.dto.Announcement;
 import org.mendybot.announcer.fault.ExecuteException;
 import org.mendybot.announcer.log.Logger;
 
 public class AnnouncerModel {
+	private ArrayList<Announcement> played = new ArrayList<>();
 	private AnnouncerOs os;
 	private File archiveDir;
 
@@ -73,4 +77,15 @@ public class AnnouncerModel {
 		return os;
 	}
 
+	public void addPlayed(Announcement a) {
+		played.add(a);
+	}
+
+	public List<Announcement> getPlayed() {
+		return played;
+	}
+
+	public void setPlayed(Announcement a) {
+		this.played = played;
+	}
 }

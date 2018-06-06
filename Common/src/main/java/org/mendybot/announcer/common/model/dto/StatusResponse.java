@@ -5,6 +5,7 @@ import java.util.List;
 
 public class StatusResponse
 {
+  private ArrayList<Announcement> announcements = new ArrayList<>();
   private ArrayList<Cube> cubes = new ArrayList<>();
   private boolean success = true;
   private String name;
@@ -80,15 +81,33 @@ public class StatusResponse
     return message;
   }
 
+  public void addAnnouncement(Announcement a)
+  {
+    announcements.add(a);
+  }
+  
+  public List<Announcement> getAnnouncements() {
+    ArrayList<Announcement> list = new ArrayList<>();
+    list.addAll(announcements);
+    return list;    
+  }
+
+  public void setAnnouncements(List<Announcement> list) {
+    announcements.clear();
+    if (list != null) {
+      announcements.addAll(list);
+    }
+  }
+
   public void addCube(Cube c)
   {
     cubes.add(c);
   }
-  
+
   public List<Cube> getCubes() {
     ArrayList<Cube> list = new ArrayList<>();
     list.addAll(cubes);
-    return list;    
+    return list;
   }
 
   public void setCubes(List<Cube> list) {

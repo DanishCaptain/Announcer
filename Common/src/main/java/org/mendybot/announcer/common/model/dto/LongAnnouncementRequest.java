@@ -2,11 +2,12 @@ package org.mendybot.announcer.common.model.dto;
 
 import java.util.UUID;
 
-public class QuickAnnouncementRequest
+public class LongAnnouncementRequest
 {
   private UUID uuid;
   private String key;
   private String text;
+  private ArchiveResource sound
 
   public UUID getUuid()
   {
@@ -36,6 +37,16 @@ public class QuickAnnouncementRequest
   public void setText(String text)
   {
     this.text = text;
+  }
+
+  public ArchiveResource getSound()
+  {
+    return sound;
+  }
+
+  public void setSound(ArchiveResource sound)
+  {
+    this.sound = sound;
   }
 
   @Override

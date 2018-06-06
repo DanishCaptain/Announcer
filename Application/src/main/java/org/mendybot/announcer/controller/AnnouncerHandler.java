@@ -73,11 +73,13 @@ public class AnnouncerHandler extends BaseHandler {
 
 	public void play(List<Announcement> announcements) throws ExecuteException {
 		for (Announcement a : announcements) {
+			getModel().addPlayed(a);
 			try {
 				play(a.getDisplayText(), a.getSayText());
 			} catch (IOException e) {
 				new ExecuteException(e);
 			}
+			a.setPlayed(true);
 		}
 	}
 

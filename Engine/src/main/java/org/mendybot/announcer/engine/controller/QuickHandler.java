@@ -54,6 +54,7 @@ public class QuickHandler extends BaseHandler
           try
           {
             Announcement q = new Announcement();
+            q.setUuid(request.getUuid());
             q.setDisplayText(request.getText());
             q.setSayText(request.getText());
             getModel().addAnnouncement(q);

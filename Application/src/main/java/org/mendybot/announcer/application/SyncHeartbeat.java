@@ -60,6 +60,10 @@ public class SyncHeartbeat extends TimerTask {
 				cube.getArchive().addImageFile(lookupResorce(f));
 			}
 		}
+		List<Announcement> aList = model.getPlayed();
+		for (Announcement a : aList) {
+			cube.addAnnouncement(a);
+		}
 
 		try {
 			SyncResponse response = c.sendSync(cube);

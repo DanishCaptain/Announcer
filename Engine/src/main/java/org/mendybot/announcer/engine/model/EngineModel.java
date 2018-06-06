@@ -12,6 +12,7 @@ import org.mendybot.announcer.common.Resource;
 import org.mendybot.announcer.common.ResourceType;
 import org.mendybot.announcer.common.model.dto.Announcement;
 import org.mendybot.announcer.common.model.dto.SyncRequest;
+import org.mendybot.announcer.log.Logger;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
@@ -24,7 +25,8 @@ public class EngineModel
   private HashMap<String, SyncRequest> cubesNamesMap = new HashMap<>();
   private HashMap<String, Long> cubesTimesMap = new HashMap<>();
   private HashMap<String, ArrayList<Announcement>> announcementsMap = new HashMap<>();
-  
+  private ArrayList<Announcement> announcementsList = new ArrayList<>();
+
   @Value("${version}")
   private String version;
   @Value("${archive.home}")
@@ -157,6 +159,7 @@ public class EngineModel
 
   public void addAnnouncement(Announcement q)
   {
+    announcementsList.add(q);
     for (Entry<String, SyncRequest> e : cubesNamesMap.entrySet()) {
       String cubeName = e.getKey();
       synchronized (announcementsMap) {
@@ -169,6 +172,13 @@ public class EngineModel
       }
     }
 
+  }
+
+  public List<Announcement> getAnnouncements()
+  {
+    ArrayList<Announcement> list = new ArrayList<>();
+    list.addAll(announcementsList);
+    return list;
   }
 
 }

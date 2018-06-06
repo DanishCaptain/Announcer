@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Map.Entry;
 
 import org.mendybot.announcer.common.Resource;
+import org.mendybot.announcer.common.model.dto.Announcement;
 import org.mendybot.announcer.common.model.dto.Archive;
 import org.mendybot.announcer.common.model.dto.ArchiveResource;
 import org.mendybot.announcer.common.model.dto.StatusRequest;
@@ -88,7 +89,12 @@ public class StatusHandler extends BaseHandler
               ar.setTs(file.lastModified());
               archive.addImageFile(ar);
             }
-            
+
+            List<Announcement> announcements = getModel().getAnnouncements();
+            for (Announcement announcement : announcements) {
+              response.addAnnouncement(announcement);
+            }
+
             List<SyncRequest> cubes = getModel().getCubes();
             for (SyncRequest sr : cubes) {
               response.addCube(sr.getCube());
